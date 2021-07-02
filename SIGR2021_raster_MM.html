@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Analyse d’images raster</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Malika Madelin  malika.madelin@u-paris.fr" />
+    <script src="SIGR2021_raster_MM_files/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer_mm.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Analyse d’images raster
+## (et télédétection)
+### Malika Madelin <br><a href="mailto:malika.madelin@u-paris.fr" class="email">malika.madelin@u-paris.fr</a>
+### 1/7/2021
+
+---
+
+class:  center middle
+background-image: url("fig/Couv.png")
+background-size: cover
+
+
+# Les images raster 
+
+
+&lt;!-- D'office sous xaringanthemer --&gt;
+
+
+
+
+&lt;!-- Lancement des librairies --&gt;
+
+
+---
+
+![](fig/Landsat.png)
+[Landsat NASA](https://landsat.gsfc.nasa.gov/sites/landsat/)
+
+
+---
+
+.pull-left[
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
+]
+
+.pull-right[
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
+]
+
+--
+class:center
+
+**qq mots sur le poids des images...**
+
+--
+&lt;center&gt;&lt;img src="fig/datatype.png" height="200px" /&gt;&lt;/center&gt;
+[dataType {raster}](https://search.r-project.org/CRAN/refmans/raster/html/dataType.html)
+
+---
+## Intérêts/avantages
+.pull-left[
+- structure des données ~ simple, &lt;br&gt;topologie implicite
+]
+
+---
+## Intérêts/avantages
+.pull-left[
+- structure des données ~ simple, &lt;br&gt;topologie implicite
+- information spatiale **continue**, &lt;br&gt;
+souvent récoltée **à distance** et **globalement**
+]
+&lt;center&gt;&lt;img src="fig/Deforestation.png"&gt;&lt;/center&gt;
+
+
+---
+## Intérêts/avantages
+![](fig/Diapo_CollHokkaido.png)
+
+---
+## Intérêts/avantages
+
+.pull-left[
+- structure des données ~ simple, &lt;br&gt;topologie implicite
+- information spatiale **continue**, &lt;br&gt;
+souvent récoltée **à distance** et **globalement**
+- information figée dans le **temps** &lt;br&gt;+ répétitivité
+]
+
+---
+## Intérêts/avantages
+
+![](fig/Diapo_CollHokkaido2.png)
+
+---
+## Intérêts/avantages
+
+.pull-left[
+- structure des données ~ simple, &lt;br&gt;topologie implicite
+- information spatiale **continue**, &lt;br&gt;
+souvent récoltée **à distance** et **globalement**
+- information figée dans le **temps** &lt;br&gt;+ répétitivité
+- caractère **multispectral** (bandes/couches),
+- parfois **multidimensionnel** (hauteur, profondeur / temps)
+]
+.pull-right[
+&lt;center&gt;Composition colorée, Sentinel 2A, 28/5/21&lt;/center&gt;
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-3-1.png" width="100%" /&gt;
+]
+
+---
+## Intérêts/avantages
+
+.pull-left[
+- structure des données ~ simple, &lt;br&gt;topologie implicite
+- information spatiale **continue**, &lt;br&gt;
+souvent récoltée **à distance** et **globalement**
+- information figée dans le **temps** &lt;br&gt;+ répétitivité
+- caractère **multispectral** (bandes/couches),
+- parfois **multidimensionnel** (hauteur, profondeur / temps)
+- plusieurs thématiques possibles pour une même image
+- relative facilité des traitements
+]
+.pull-right[
+![](fig/Diapo_CollICUC.png)
+Extrait d'une présentation de Madelin et Dupuis, 2018 
+]
+
+---
+## Intérêts/avantages
+
+.pull-left[
+- structure des données ~ simple, &lt;br&gt;topologie implicite
+- information spatiale **continue**, &lt;br&gt;
+souvent récoltée **à distance** et **globalement**
+- information figée dans le **temps** &lt;br&gt;+ répétitivité
+- caractère **multispectral** (bandes/couches),
+- parfois **multidimensionnel** (hauteur, profondeur / temps)
+- plusieurs thématiques possibles pour une même image
+- relative facilité des traitements
+
+]
+.pull-right[
+![](fig/Diapo_CollICUC.png)
+Extrait d'une présentation de Madelin et Dupuis, 2018 
+]
+
+
+... mais **volume** des données non négligeable 
+
+---
+
+## Par rapport à la reproductibilité
+
+- souvent homogénéité dans la production des données (produits globaux), harmonisation "minime"
+
+
+--
+&lt;center&gt;&lt;img src="fig/Diapo_CollCIST.png" height="370px" /&gt;&lt;/center&gt;
+&lt;center&gt;Extrait d'une présentation de Pécout &lt;it&gt;et al&lt;/it&gt;, 2016&lt;/center&gt;
+&lt;center&gt;Projet Grandes métropoles&lt;/center&gt;
+---
+
+## Par rapport à la reproductibilité
+
+- souvent homogénéité dans la production des données (produits globaux), harmonisation "minime"
+
+- données souvent accessibles &lt;br&gt;
+_via_ des **plateformes** ([Earth Explorer](), [Sentinel Hub](), [GEE](), ...) &lt;br&gt;
+
+&lt;center&gt;&lt;img src="fig/plateformes2.png" height="400px" /&gt;&lt;/center&gt;
+
+---
+
+## Par rapport à la reproductibilité
+
+- souvent homogénéité dans la production des données (produits globaux), harmonisation "minime"
+
+- données souvent accessibles &lt;br&gt;
+_via_ des **plateformes** ([Earth Explorer](), [Sentinel Hub](), [GEE](), ...) &lt;br&gt;
+_via_ des **outils d'extraction** pour certaints formats (ncdf) &lt;br&gt;
+_via_ certains packages R (`{raster}`, `{modisTSP}`, `{sen2r}`...)
+
+--
+- de nombreux formats ouverts&lt;br&gt;
+[geotiff](https://www.ogc.org/standards/geotiff) / [jp2](https://fr.wikipedia.org/wiki/JP2) / asc / [gpkg-raster](https://gdal.org/drivers/raster/gpkg.html) / [coverageJSON](https://covjson.org/...)&lt;br&gt;
+([ncdf](https://www.unidata.ucar.edu/software/netcdf/) / hdf /grib...) 
+
+---
+
+![](fig/Isere_ascii.png)
+(BD Alti 25m)
+
+---
+
+## Par rapport à la reproductibilité
+
+- souvent homogénéité dans la production des données (produits globaux), harmonisation "minime"
+
+- données souvent accessibles &lt;br&gt;
+_via_ des **plateformes** ([Earth Explorer](), [Sentinel Hub](), [GEE](), ...) &lt;br&gt;
+_via_ des **outils d'extraction** pour certaints formats (ncdf) &lt;br&gt;
+_via_ certains packages R (`{raster}`, `{modisTSP}`, `{sen2r}`...)
+
+- de nombreux formats ouverts&lt;br&gt;
+[geotiff](https://www.ogc.org/standards/geotiff) / [jp2](https://fr.wikipedia.org/wiki/JP2) / asc / [gpkg-raster](https://gdal.org/drivers/raster/gpkg.html) / [coverageJSON](https://covjson.org/...)&lt;br&gt;
+([ncdf](https://www.unidata.ucar.edu/software/netcdf/) / hdf /grib...) 
+
+--
+&lt;center&gt;&lt;img src="fig/ncdf.png" height="150px"&gt;&lt;/center&gt;
+[UCAR](http://www.narccap.ucar.edu)
+
+---
+## Par rapport à la reproductibilité
+
+.pull-left[
+&lt;center&gt;Modèle numérique d'élévation &lt;br&gt;SRTM - Argentine&lt;/center&gt;
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-4-1.png" width="100%" /&gt;
+
+]
+
+
+.pull-right[
+
+
+```r
+dim(srtm)
+```
+
+```
+## [1] 6000 6000    1
+```
+Export `writeRaster()` selon 3 formats 
+et calcul de la taille des fichiers résultants `file.size()`
+
+
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Type du fichier &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Taille en Mo &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ascii &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 155.7 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; tif &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 60.6 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; gpkg &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.7 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+## Par rapport à la reproductibilité
+
+- souvent homogénéité dans la production des données (produits globaux), harmonisation "minime"
+
+- données souvent accessibles &lt;br&gt;
+_via_ des **plateformes** ([Earth Explorer](), [Sentinel Hub](), [GEE](), ...) &lt;br&gt;
+_via_ des **outils d'extraction** pour certaints formats (ncdf) &lt;br&gt;
+_via_ certains packages R (`{raster}`, `{modisTSP}`, `{sen2r}`...)
+
+- de nombreux formats ouverts&lt;br&gt;
+[geotiff](https://www.ogc.org/standards/geotiff) / [jp2](https://fr.wikipedia.org/wiki/JP2) / asc / [gpkg-raster](https://gdal.org/drivers/raster/gpkg.html) / [coverageJSON](https://covjson.org/...)&lt;br&gt;
+([ncdf](https://www.unidata.ucar.edu/software/netcdf/) / hdf /grib...) 
+
+- des libraires C, communes à plusieurs logiciels/langages (GDAL, ...)
+
+
+---
+
+## Sous R, 3 packages "phares"
+
+.left-column[
+[`{raster}`](https://cran.r-project.org/web/packages/raster/) &lt;br&gt;
+
+
+![](fig/Hijmans.png)
+]
+
+.right-column[
+  .pull-left[
+  &lt;center&gt;&lt;img src="fig/raster.png"  /&gt;&lt;/center&gt;
+  ]
+  .pull-right[
+  Documentation de 249p. (18/6/2018), 
+  avec en préambule, une organisation par blocs : &lt;br&gt;&lt;br&gt;
+    ![](fig/raster2.png) 
+  ]
+
+  ]
+
+
+
+
+---
+
+## Sous R, 3 packages "phares"
+
+.left-column[
+[`{stars}`](https://cran.r-project.org/web/packages/stars/index.html) &lt;br&gt;
+
+
+  ![](fig/EdzerPebesma.png)
+]
+.right-column[
+
+  ![](fig/stars2.png)
+  ]
+  
+
+---
+
+## Sous R, 3 packages "phares"
+
+.left-column[
+[`{terra}`](https://cran.r-project.org/web/packages/terra/) &lt;br&gt;
+
+
+![](fig/Hijmans.png)
+]
+.right-column[
+  .pull-left[
+  &lt;center&gt;&lt;img src="fig/terra.png"  /&gt;&lt;/center&gt;
+  ]
+  .pull-right[
+    Documentation de 218p. (20/6/2018), 
+    avec en préambule, une organisation par blocs : &lt;br&gt;&lt;br&gt;
+    ![](fig/terra2.png)
+  ]
+
+  ]
+
+---
+## Sous R, 3 packages "phares"
+
+La "popularité" des 3 packages, à partir du nombre de téléchargements
+
+
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-8-1.png" width="100%" /&gt;
+
+
+---
+## Sous R, 3 packages "phares"
+
+Comparatif du [blog de seascape](https://www.seascapemodels.org/rstats/2021/06/01/STARS.html) : "So terra was about 8.5 times faster than raster and stars was about 3 times faster than terra (so about 26 times faster than raster)."
+
+Pour les opérations réalisées...
+
+--
+
+![](fig/Benchmark.png)
+[Krzysztof Dyba - kadyb](https://github.com/kadyb/raster-benchmark)
+
+---
+class: inverse center middle
+
+# Les traitements &lt;br&gt;sur les images raster
+
+
+---
+
+# Lecture des fichiers raster sous R
+
+.left-column[
+![](fig/Img_zoom_sen2b.png)
+]
+.right-column[
+
+```r
+file.size("data/Sentinel/Sen2_zoom_TCI_280521_10m.tif") * 10^-3 #  (en Ko)
+```
+
+```
+## [1] 183.038
+```
+
+```r
+GDALinfo("data/Sentinel/Sen2_zoom_TCI_280521_10m.tif")
+```
+
+```
+## rows        218 
+## columns     279 
+## bands       3 
+## lower left origin.x        632850.6 
+## lower left origin.y        5093260 
+## res.x       9.984642 
+## res.y       9.984154 
+## ysign       -1 
+## oblique.x   0 
+## oblique.y   0 
+## driver      GTiff 
+## projection  +proj=utm +zone=30 +datum=WGS84 +units=m +no_defs 
+## file        data/Sentinel/Sen2_zoom_TCI_280521_10m.tif 
+## apparent band summary:
+##   GDType hasNoDataValue NoDataValue blockSize1 blockSize2
+## 1   Byte          FALSE           0          9        279
+## 2   Byte          FALSE           0          9        279
+## 3   Byte          FALSE           0          9        279
+## apparent band statistics:
+##   Bmin Bmax Bmean Bsd
+## 1    0  255    NA  NA
+## 2    0  255    NA  NA
+## 3    0  255    NA  NA
+## Metadata:
+## AREA_OR_POINT=Area
+```
+]
+---
+
+# Lecture des fichiers raster sous R
+
+Avec [`{raster}`](https://cran.r-project.org/web/packages/raster/) 
+
+
+```r
+r &lt;- raster("data/Sentinel/Sen2_zoom_TCI_280521_10m.tif")
+r
+```
+
+```
+## class      : RasterLayer 
+## band       : 1  (of  3  bands)
+## dimensions : 218, 279, 60822  (nrow, ncol, ncell)
+## resolution : 9.984642, 9.984154  (x, y)
+## extent     : 632850.6, 635636.3, 5093260, 5095437  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=30 +datum=WGS84 +units=m +no_defs 
+## source     : Sen2_zoom_TCI_280521_10m.tif 
+## names      : Sen2_zoom_TCI_280521_10m 
+## values     : 0, 255  (min, max)
+```
+
+```r
+object.size(r) ; inMemory(r)
+```
+
+```
+## 14608 bytes
+```
+
+```
+## [1] FALSE
+```
+
+---
+
+# Lecture des fichiers raster sous R
+
+Avec [`{raster}`](https://cran.r-project.org/web/packages/raster/) 
+
+
+```r
+r_brick &lt;- brick("data/Sentinel/Sen2_zoom_TCI_280521_10m.tif")
+r_brick
+```
+
+```
+## class      : RasterBrick 
+## dimensions : 218, 279, 60822, 3  (nrow, ncol, ncell, nlayers)
+## resolution : 9.984642, 9.984154  (x, y)
+## extent     : 632850.6, 635636.3, 5093260, 5095437  (xmin, xmax, ymin, ymax)
+## crs        : +proj=utm +zone=30 +datum=WGS84 +units=m +no_defs 
+## source     : Sen2_zoom_TCI_280521_10m.tif 
+## names      : Sen2_zoom_TCI_280521_10m.1, Sen2_zoom_TCI_280521_10m.2, Sen2_zoom_TCI_280521_10m.3 
+## min values :                          0,                          0,                          0 
+## max values :                        255,                        255,                        255
+```
+
+```r
+object.size(r_brick)
+```
+
+```
+## 15192 bytes
+```
+
+---
+
+# Lecture des fichiers raster sous R
+
+Avec [`{terra}`](https://cran.r-project.org/web/packages/terra/) 
+
+
+```r
+t &lt;- rast("data/Sentinel/Sen2_zoom_TCI_280521_10m.tif")
+t
+```
+
+```
+## class       : SpatRaster 
+## dimensions  : 218, 279, 3  (nrow, ncol, nlyr)
+## resolution  : 9.984642, 9.984154  (x, y)
+## extent      : 632850.6, 635636.3, 5093260, 5095437  (xmin, xmax, ymin, ymax)
+## coord. ref. : +proj=utm +zone=30 +datum=WGS84 +units=m +no_defs 
+## source      : Sen2_zoom_TCI_280521_10m.tif 
+## red-grn-blue: 1, 2, 3 
+## names       : Sen_1, Sen_2, Sen_3
+```
+
+```r
+object.size(t)
+```
+
+```
+## 1304 bytes
+```
+
+---
+
+# Lecture des fichiers raster sous R
+
+Avec [`{stars}`](https://cran.r-project.org/web/packages/stars/index.html) 
+
+
+```r
+s &lt;- read_stars("data/Sentinel/Sen2_zoom_TCI_280521_10m.tif")
+s
+```
+
+```
+## stars object with 3 dimensions and 1 attribute
+## attribute(s):
+##                               Min. 1st Qu. Median     Mean 3rd Qu. Max.
+## Sen2_zoom_TCI_280521_10m.tif    10      30     51 57.15503      64  255
+## dimension(s):
+##      from  to  offset    delta                refsys point values x/y
+## x       1 279  632851  9.98464 WGS 84 / UTM zone 30N FALSE   NULL [x]
+## y       1 218 5095437 -9.98415 WGS 84 / UTM zone 30N FALSE   NULL [y]
+## band    1   3      NA       NA                    NA    NA   NULL
+```
+
+```r
+object.size(s)
+```
+
+```
+## 1471360 bytes
+```
+
+---
+# Lecture des fichiers raster sous R
+
+** Opérations classiques après lecture / création d'un raster : **
+
+.left-column[
+- dimensions
+- étendue
+- résolution(s)
+- projection
+]
+
+---
+# Lecture des fichiers raster sous R
+
+** Opérations classiques après lecture / création d'un raster :**
+
+.left-column[
+- dimensions
+- étendue
+- résolution(s)
+- projection
+- visualisation (rapide)
+- histogramme des valeurs
+- parfois améliorations des contrastes &lt;br&gt; ( _stretching_ )
+]
+
+.right-column[
+.pull-left[
+![](fig/Img_zoom_sen2b.png)
+]
+
+.pull-right[
+
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-14-1.png" width="100%" /&gt;
+À partir de Sentinel B08
+]
+
+]
+
+---
+# Modifications de la zone d'étude
+
+--
+### • (re)projection
+
+![](fig/FigCanada.png)
+Source : Centre Canadien de Télédétection
+
+---
+# Modifications de la zone d'étude
+
+### • (re)projection
+`raster:projectRaster()` / `terra:project()` / `stars:st_transform()`
+
+--
+&lt;center&gt;&lt;img src="fig/stars_projection.png" height="300px"&gt;&lt;/center&gt;
+[avec `{stars}`](https://cran.r-project.org/web/packages/stars/vignettes/stars5.html)
+---
+# Modifications de la zone d'étude
+
+### • découpage et masque ( _crop &amp; mask_ )
+
+
+
+```r
+# on reprend la compo colorée de Sentinel 2 (sen)
+# ajout du buffer 30 km autour d'ici (cf. présentation de Ronan)
+buf &lt;- st_read(dsn = paste0("data/KeynoteRonan/oleron.gpkg"), 
+               layer = "cnrsBuf", quiet = TRUE)
+buf &lt;- st_transform(buf, crs(sen))  # pour avoir le même CRS
+buf &lt;- vect(buf) # transformation de l'objet sf en object SpatVector (terra)
+
+# découpage (selon l'étendue)
+sen_Oleron_crop &lt;- crop(sen, buf)
+
+# masque
+sen_Oleron_mask &lt;- mask(sen, buf)
+```
+
+---
+# Modifications de la zone d'étude
+
+### • découpage et masque ( _crop &amp; mask_ )
+
+.left-column[
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-16-1.png" width="100%" /&gt;
+]
+
+---
+# Modifications de la zone d'étude
+
+### • découpage et masque ( _crop &amp; mask_ )
+
+.left-column[
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-17-1.png" width="100%" /&gt;
+]
+
+
+.right-column[
+
+.pull-left[
+&lt;center&gt; _CROP_ &lt;center&gt; 
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-18-1.png" width="100%" /&gt;
+]
+
+.pull-right[
+&lt;center&gt; _MASK_ &lt;/center&gt; 
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-19-1.png" width="100%" /&gt;
+]
+
+]
+
+
+---
+# Modifications de la zone d'étude
+
+### • agrégation / désagrégation 
+
+![](fig/agg_disag.png)
+
+---
+# Modifications de la zone d'étude
+
+### • Fusion _merge_ et mosaïque
+
+![](fig/2SRTM.png)
+
+
+---
+# Opérations locales
+
+![](fig/OpLocales.png)
+
+Source : J. Mennis
+&lt;!-- Figure d'un ancien cours de J. Mennis, qui reprend a priori une figure d'un ouvrage, mais pas d'info sur lequel --&gt;
+
+
+---
+# Opérations locales
+
+## • Reclassification ( _reclassify_ )
+
+Des 44 postes les plus fins de la nomenclature CLC2018 aux 5 principaux 
+![](fig/Reclass.png)
+
+---
+# Opérations locales
+
+## • Création de "masque raster" (1/0)
+
+De la lecture des valeurs spectrales à une typologie eau / pas eau
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-20-1.png" width="100%" /&gt;
+
+Autre possibilité : `r[r&gt;500] &lt;- NA`
+
+---
+# Opérations locales
+
+## • Calcul matriciel / Calculatrice raster
+
+La gestion des valeurs manquantes : 
+
+`r[r[]== -9999] &lt;- NA` 
+
+`r[is.na(r)] &lt;- 0` 
+
+---
+# Opérations locales
+
+## • Calcul matriciel / Calculatrice raster
+
+&lt;center&gt; &lt;img src="fig/OpLoc_Clim.png" height="300px"&gt;&lt;/center&gt;
+Source : [soils.org](http://soils.org)
+
+
+---
+# Opérations locales
+
+## • Calcul matriciel / Calculatrice raster
+
+Calcul d'un NDVI 
+
+
+```r
+B04 &lt;- rast("data/Sentinel/T30TXR_20210528T105621_B04_10m.jp2")
+B08 &lt;- rast("data/Sentinel/T30TXR_20210528T105621_B08_10m.jp2")
+dim(B08)
+```
+
+```
+## [1] 10980 10980     1
+```
+
+```r
+NDVI &lt;- (B08 - B04) / (B08 + B04)
+```
+
+---
+# Opérations locales
+
+## • Calcul matriciel / Calculatrice raster
+
+
+```r
+plot(NDVI)
+```
+
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-22-1.png" width="100%" /&gt;
+
+---
+# Opérations locales
+
+## • Calcul matriciel / Calculatrice raster
+
+Avec `{terra::calc()}`
+---
+# Opérations locales
+
+## • Calcul matriciel / Calculatrice raster
+
+Autres exemples : pour comparer 2 raster, pour voir la corrélation entre 2 raster, etc. 
+
+=&gt; opérations souvent utilisées pour des intégrations temporelles et pour des calculs d'indices (ex : superposition pondérée)
+
+... mais attention à la cohérence spatiale entre les couches raster
+
+---
+# Opérations focales
+
+![](fig/OpFocales.png)
+
+Source : J. Mennis
+
+---
+# Opérations focales
+
+## • Filtres 
+(passe-bas ~ lissage, passe-haut, Laplacien...)
+
+&lt;center&gt;Extrait de la BD Alti IGN 25m • Médiane sur une fenêtre de 3x3&lt;/center&gt;
+.pull-left[
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-23-1.png" width="100%" /&gt;
+]
+.pull-left[
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-24-1.png" width="100%" /&gt;
+]
+
+---
+# Opérations focales
+
+## • Autour des raster d'altitude
+
+
+```r
+pente &lt;- terrain(srtm, "slope", 
+                 neighbors = 4, # 4 ou 8 pixels autour pris en compte
+                 unit = "degrees") 
+sp::spplot(pente, col.regions=grey.colors(100, rev = TRUE))
+```
+
+&lt;img src="SIGR2021_raster_MM_files/figure-html/unnamed-chunk-25-1.png" width="100%" /&gt;
+
+
+---
+# Opérations zonales ou globales
+
+![](fig/OpZonales.png)
+
+Source : J. Mennis
+
+
+---
+# Opérations zonales ou globales
+
+
+```r
+class(r_zoom)
+```
+
+```
+## [1] "SpatRaster"
+## attr(,"package")
+## [1] "terra"
+```
+
+```r
+head(values(r_zoom))
+```
+
+```
+##      U2018_CLC2018_V2020_20u1
+## [1,]                       24
+## [2,]                       24
+## [3,]                       24
+## [4,]                       24
+## [5,]                       24
+## [6,]                       24
+```
+
+```r
+# ou r_zoom[]
+```
+
+---
+# Opérations zonales ou globales
+
+
+```r
+table(r_zoom[])*100/ncell(r_zoom[])
+```
+
+```
+## 
+##         2        18        24        25        39        44 
+## 12.962963 12.962963 39.351852 12.500000  9.722222 12.500000
+```
+
+---
+# Opérations zonales ou globales
+
+Aussi avec `cellStats(r, stat=mean)`, `minValues(r)`...
+
+• Statistiques zonales (Z = raster ou vecteur) :
+
+`mon_sf$newcol &lt;- extract(r, mon_sf)`  # pour sf ponctuel
+
+`mon_sf$newcol &lt;- extract(r, mon_sf, fun=mean, df=TRUE)` # pour sf polygones
+
+`mon_sf$newcol &lt;- extract(r, mon_sf, buffer = 100, fun=mean, df=TRUE)`# pour sf ponctuel avec buffer
+
+---
+![](fig/Diapo_CollICUC.png)
+---
+![](fig/Fig_MadelinDupuis2020.png)
+Madelin, Dupuis, 2020
+
+---
+# Les traitements des images sat
+
+- amélioration pour aider à l'interprétation
+
+--
+
+- traitements physiques (signal -&gt; propriété physique)
+
+--
+- réalisation de zonages 
+
+---
+# Les traitements des images sat
+
+![](fig/CalozCollet.png)
+Caloz, Collet, 2001
+
+---
+# Les traitements des images sat
+
+Exemple à partir des 4 bandes de Sentinel 10m (B/V/R/PIR)
+
+```r
+l &lt;- list.files("data/Sentinel/", 
+                pattern = "T30TXR_20210528T105621_B",
+                full.names=TRUE)
+r &lt;- rast(l)
+ext &lt;- c(632850.5598, 635636.2748, 5093260.008, 5095436.5536)
+r &lt;- crop(r, ext)
+```
+
+
+---
+# Cartographie, visualisation
+
+- `{raster}` ou `{raster}`, avec `plot()`
+- `{stars}` (qui gère bien les raster lourds, _via_ une agrégation de l'information en amont)
+- `{sp}` avec `spplot()`
+- `{rasterVis}`, avec `levelplot()`
+- `{leaflet}` avec `addRasterImage()`(pb : projection, raster lourds)
+- `{tmap}` avec `tm_raster()`
+- `{rayshader}` 
+- `{mapview}`...
+
+
+---
+
+# Ressources
+
+Hijmans R. (2019). [Spatial Data Science with R](https://rspatial.org/)
+
+Lovelace R., Nowosad J. &amp; Muenchow J. (2020). [Geocomputation with R](https://geocompr.robinlovelace.net)
+
+Pebesma E. &amp; Bivand R. (2019). [Spatial Data Science with applications in R](https://www.r-spatial.org/book)
+
+Ghosh A. &amp; Hijmans R. [Remote Sensing Image Analysis with R](https://rspatial.org/terra/rs/rs.pdf)
+
+
+
+les blogs, Rpubs, RZine, les stackoverflow &amp; Co.
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
